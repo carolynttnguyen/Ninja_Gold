@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ninja Gold</title>
+    <style>
+        .gold_form {
+            display: inline-block;
+            border: 2px black solid;
+            border: 2px black solid;
+            padding: 15px;
+            width: 230px;
+            text-align: center;
+        }
+        #gold {
+            border: 2px black solid;
+            padding: 5px;
+        }
+        #activity {
+            border: 2px black solid;
+            padding: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <p>Your Gold: <span id="gold">{{ request.session.gold }}</span></p>
+
+    <div id="form">
+        {% for place in places %}
+        <form action="{{place}}" class="gold_form">
+            <h1>{{ place }}</h1>
+            {% if place == 'farm' %}
+                <p>{{places.farm}}</p>
+            {% elif place == cave %}
+                <p>{{places.cave}}</p>
+            {% elif place == cave %}
+                <p>{{places.cave}}</p>
+            {% else %}
+            <p>{{places.casino}}</p>
+            {% endif %}
+
+            <input type="submit" value="Find Gold!"> 
+        </form>
+
+        {% endfor %}
+    </div>
+
+    <div id="activity">
+        <p>activities:</p>
+    </div>
+</body>
+</html>
