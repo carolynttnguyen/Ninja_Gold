@@ -1,0 +1,17 @@
+.gold_form {
+    display:inline-block;
+    border: 2px solid black;
+    padding: 20px;
+    width: 230px;
+    text-align: center;
+}
+
+#gold {
+    border: 2px solid black;
+    padding: 5px;
+}
+
+#activity {
+    border: 2px solid black;
+    padding: 5px;
+}

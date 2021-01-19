@@ -1,54 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ninja Gold</title>
-    <style>
-        .gold_form {
-            display: inline-block;
-            border: 2px black solid;
-            border: 2px black solid;
-            padding: 15px;
-            width: 230px;
-            text-align: center;
-        }
-        #gold {
-            border: 2px black solid;
-            padding: 5px;
-        }
-        #activity {
-            border: 2px black solid;
-            padding: 5px;
-        }
-    </style>
+    <title>Ninja Gold Game</title>
+    {% load static %}
+    <link rel="stylesheet" href=" {% static 'style.css' %} ">
+
 </head>
 
 <body>
-    <p>Your Gold: <span id="gold">{{ request.session.gold }}</span></p>
+    <!-- Header for gold count  & session reset -->
+    <header>
+        <h1>Ninja Gold Mining</h1>
+        <a href="/reset"><button>Start Over</button></a>
+    </header>
 
-    <div id="form">
+    <p> Your Gold: <span id="gold"> {{request.session.gold}} </span></p>
+
+    <p>Win Condition: {{request.session.win}} </p>
+    {% if request.session.end %}
+    <h1> LOOK LIKE YOU WON!!!</h1>
+    {% endif %}
+
+    <form action="/win_conditions" method="post">
+        {% csrf_token %}
+        <input type="number" name="win">
+        <input type="submit" value="Set Win Condition">
+    </form>
+
+    <!-- containers for forms handling locations to earn Gold -->
+    <div id="forms">
         {% for place in places %}
-        <form action="{{place}}" class="gold_form">
-            <h1>{{ place }}</h1>
+        <form action="/place/{{place}}" class="gold_form">
+            <!-- {% csrf_token %}  -->
+            <h3>{{place}} </h3>
+            <!-- <p>{{places.place}} </p> -->
             {% if place == 'farm' %}
-                <p>{{places.farm}}</p>
-            {% elif place == cave %}
-                <p>{{places.cave}}</p>
-            {% elif place == cave %}
-                <p>{{places.cave}}</p>
+            <p>{{places.farm}}</p>
+            {% elif place == 'cave' %}
+            <p>{{places.cave}}</p>
+            {% elif place == 'house' %}
+            <p>{{places.house}}</p>
             {% else %}
             <p>{{places.casino}}</p>
             {% endif %}
-
-            <input type="submit" value="Find Gold!"> 
+            <input type="hidden" name="place" value="farm">
+            <input type="submit" value="Find Gold!">
         </form>
-
         {% endfor %}
     </div>
 
     <div id="activity">
-        <p>activities:</p>
+        <h3>Activities:</h3>
+        <ul>
+            {% for activity in request.session.activities %}
+            {% if 'earned' in activity %}
+            <li style=color:gold> {{activity}} </li>
+            {{else}}
+            <li style=color:purple> {{activity}} </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
     </div>
+
+
 </body>
+
 </html>
